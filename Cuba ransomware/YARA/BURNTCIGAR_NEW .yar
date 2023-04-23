@@ -5,7 +5,7 @@ rule BURNTCIGAR_NEW
   meta:
         author = "Kaspersky"
         description = "Rule to detect the new samples of BURNTCIGAR"
-       
+	copyright = "Kaspersky"
 	strings:
 		$hex1 = {8B 44 24 30} 
 		$hex2 = {8B 45 A8} 
