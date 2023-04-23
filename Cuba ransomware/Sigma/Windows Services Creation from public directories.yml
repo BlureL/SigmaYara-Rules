@@ -1,0 +1,23 @@
+title: Windows Services Creation from public directories      
+description: Detects creating new Windows services from public directories    
+author: Kaspersky  
+status: stable  
+tags:  
+   - attack.Persistence  
+   - attack.Privilege_Escalation  
+   - attack.T1543.003  
+logsource:  
+    product: windows  
+    category: system  
+detection:  
+    selection:  
+        EventID: 7045  
+    servname:  
+    ServiceFileName|contains:  
+            - '\Users\'  
+            - '\ProgramData\'  
+            - '\Windows\Temp\'  
+            - '\Windows\Tasks\'  
+    condition: selection and servname  
+falsepositives: legitimate software
+level: Medium
