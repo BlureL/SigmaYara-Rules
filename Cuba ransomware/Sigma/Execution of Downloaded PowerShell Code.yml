@@ -1,1 +1,36 @@
-
+title: Execution of Downloaded Powershell Code
+description: Detects downloading content via Powershell and further its execution
+author: Kaspersky
+status: stable
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection1:
+        Image|endswith:
+          - 'powershell.exe'
+          - 'pwsh.exe'
+    selection2:
+        CommandLine|contains:
+            - 'Invoke-WebRequest'
+            - 'IWR'
+            - 'Invoke-RestMethod'
+            - 'IRM'
+            - 'curl'
+            - 'wget'
+            - 'Webclient'
+            - '.DownloadString('
+            - '.DownloadFile('
+            - 'Start-BitsTransfer -Source '
+    selection3:
+        CommandLine|contains:
+            - 'IEX'
+            - 'Invoke-Expression'
+            - 'start-process'
+    timeframe: 5m
+    condition: selection1 and selection2 | near selection3
+falsepositives: -
+level: high
