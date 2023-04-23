@@ -1,0 +1,28 @@
+title: Sigma-Generic-Enabling RDP in Windows Firewall
+description: Detects adding new firewall rule for enabling RDP
+author: Kaspersky
+status: stable
+tags:
+    - attack.lateral_movement
+    - attack.t1021.001
+    - attack.persistence
+    - attack.t1133
+    - attack.Defense Evasion
+    - attack.t1112
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        ImageName|endswith: 'netsh.exe'
+    selection2:
+        - CommandLine|contains|all:
+            - 'group="remote desktop"'
+            - 'enable=Yes'
+        - CommandLine|contains|all:
+            - 'action=allow'
+            - 'enable=yes'
+            - 'port=3389'
+    condition: selection and selection2
+falsepositives: -
+level: high
