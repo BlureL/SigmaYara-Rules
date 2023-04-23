@@ -1,0 +1,23 @@
+title: Generic-External DLL Execution via rundll32
+description: Detects external .dll execution via commandline rundll32
+author: Kaspersky
+status: stable
+tags:
+    - attack.defense_evasion
+    - attack.t1218.011
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|contains:
+            - '\rundll32.exe'
+        Commandline|contains:
+            - 'http://'
+            - 'ftp://'
+            - 'https://'
+            - 'ftps://'
+            - '\\'
+    condition: selection
+falsepositives: unknown
+level: high
