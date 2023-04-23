@@ -1,0 +1,52 @@
+title: Generic-Drop and execution file from a trusted process
+description: An adversary may weaponize an office document to drop and execute the malicious payload
+author: Kaspersky
+status: stable
+tags:
+    - attack.InitialAccess
+    - attack.Execution
+    - attack.T1204.002
+    - attack.T1566.001
+logsource:
+    product: windows
+    category: file_creation
+detection:
+    selection1:
+        Image|contains:
+            - '\winword.exe'
+            - '\access.exe'
+            - '\excel.exe'
+            - '\mspub.exe'
+            - '\powerpnt.exe'
+            - '\visio.exe'
+            - '\outlook.exe'
+            - '\wordpad.exe'
+            - '\notepad.exe'
+            - '\AcroRd32.exe'
+            - '\acrobat.exe'
+    selection2:
+        TargetFilename|contains:
+             -'.bat'
+             -'.cmd'
+             -'.cpl'
+             -'.exe'
+             -'.hta'
+             -'.dll'
+             -'.reg'
+             -'.vb'
+             -'.vbe'
+             -'.vbs'
+             -'.vba'
+             -'.wsf'
+             -'.wsc'
+             -'.ps1'
+             -'.jse'
+             -'.js'
+             -'.msi'
+             -'.sct'
+             -'.pif'
+             -'.paf'
+             -'.rgs'
+    condition: selection1 and selection2
+falsepositives: unknown
+level: high
