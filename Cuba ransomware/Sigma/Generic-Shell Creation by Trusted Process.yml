@@ -1,1 +1,63 @@
-
+title: Generic-Shell Creation by Trusted Process
+description: Start windows shell from frequent attachment format in a letter
+author: Kaspersky
+status: stable
+tags:
+    - attack.InitialAccess
+    - attack.Execution
+    - attack.T1204.002
+    - attack.T1566.001
+    - attack.T1059
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        ParentImage|endswith:
+            - '\winword.exe'
+            - '\access.exe'
+            - '\excel.exe'
+            - '\mspub.exe'
+            - '\powerpnt.exe'
+            - '\visio.exe'
+            - '\outlook.exe'
+            - '\wordpad.exe'
+            - '\notepad.exe'
+            - '\AcroRd32.exe'
+            - '\acrobat.exe'
+        Image|endswith:
+            - '\mshta.exe'
+            - '\wscript.exe'
+            - '\mftrace.exe'
+            - '\powershell.exe'
+            - '\powershell_ise.exe'
+            - '\scriptrunner.exe'
+            - '\cmd.exe'
+            - '\forfiles.exe'
+            - '\msiexec.exe'
+            - '\rundll32.exe'
+            - '\wmic.exe'
+            - '\hh.exe'
+            - '\regsvr32.exe'
+            - '\schtasks.exe'
+            - '\scrcons.exe'
+            - '\bash.exe'
+            - '\sh.exe'
+            - '\cscript.exe'
+    filter:
+        Image|endswith:
+            - '\rundll32.exe'
+        CommandLine|contains:
+            - 'ndfapi.dll'
+            - 'tcpmonui.dll'
+            - 'printui.dll'
+            - 'devmgr.dll'
+            - 'keymgr.dll'
+            - 'powrprof.dll'
+            - 'advapi32.dll'
+            - 'shdocvw.dll'
+            - 'user32.dll'
+            - 'shell32.dll'
+    condition: selection and not filter
+falsepositives: -
+level: high
